@@ -1,0 +1,5 @@
+{
+  "name": "caption",
+  "description": "Aplikasi pembuat caption dan hashtag otomatis menggunakan Gemini AI dan Firebase untuk penyimpanan data produk.",
+  "requestFramePermissions": []
+}
