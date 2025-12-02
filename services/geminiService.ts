@@ -1,6 +1,6 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { GeneratedContent, ContentStrategy } from "../types";
+import { GeneratedContent, ContentStrategy, ToneType } from "../types";
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
@@ -38,6 +38,17 @@ export const generateProductCaption = async (
       "${customInstruction}"
     ` : '';
 
+    // Logika Tone Otomatis
+    let toneInstruction = `Gaya Bahasa (Tone): ${tone}`;
+    
+    if (tone === ToneType.AUTO) {
+      if (mainBrainInstruction) {
+        toneInstruction = `Gaya Bahasa: JANGAN gunakan nada generik. ANALISIS 'Karakter & Aturan Mutlak' di atas, lalu tentukan dan gunakan nada bicara (tone) yang paling mencerminkan karakter tersebut secara natural.`;
+      } else {
+        toneInstruction = `Gaya Bahasa: Analisis produk dan deskripsi, lalu pilih tone yang paling efektif untuk menjual produk ini secara otomatis.`;
+      }
+    }
+
     const prompt = `
       Bertindaklah sebagai Copywriter Profesional.
       
@@ -50,7 +61,7 @@ export const generateProductCaption = async (
       - Nama Produk: ${productName}
       - Link Produk: ${productLink || "(Link ada di bio)"}
       - Deskripsi Produk: ${description}
-      - Gaya Bahasa (Tone): ${tone}
+      - ${toneInstruction}
 
       ${strategyPrompt}
 

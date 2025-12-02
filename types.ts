@@ -41,6 +41,7 @@ export interface GeneratedCaptionData {
 }
 
 export enum ToneType {
+  AUTO = '✨ Otomatis (Sesuai Karakter Otak)',
   PROFESSIONAL = 'Profesional',
   FUN = 'Lucu & Santai',
   PERSUASIVE = 'Persuasif (Jualan)',

@@ -20,7 +20,9 @@ const ProductGenerator: React.FC<ProductGeneratorProps> = ({ user, onSuccess, on
   const [selectedProductId, setSelectedProductId] = useState<string>('');
   const [selectedStrategyId, setSelectedStrategyId] = useState<string>('');
   const [selectedBrainId, setSelectedBrainId] = useState<string>('');
-  const [tone, setTone] = useState<ToneType>(ToneType.FUN);
+  
+  // Default Tone: Auto
+  const [tone, setTone] = useState<ToneType>(ToneType.AUTO);
   const [customInstruction, setCustomInstruction] = useState('');
 
   // UI State
@@ -200,7 +202,7 @@ const ProductGenerator: React.FC<ProductGeneratorProps> = ({ user, onSuccess, on
                 ))}
               </select>
               {selectedBrain && (
-                <div className="mt-2 text-xs text-indigo-300 bg-indigo-900/30 p-2 rounded-lg border border-indigo-800">
+                <div className="mt-2 text-xs text-indigo-300 bg-indigo-900/30 p-2 rounded-lg border border-indigo-800 animate-fade-in">
                   Otak Aktif: <strong>{selectedBrain.title}</strong>
                 </div>
               )}
@@ -237,20 +239,29 @@ const ProductGenerator: React.FC<ProductGeneratorProps> = ({ user, onSuccess, on
                 Gaya Bahasa (Tone)
               </label>
               <div className="grid grid-cols-2 gap-2">
-                {Object.values(ToneType).map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    onClick={() => setTone(t)}
-                    className={`px-2 py-2 text-xs md:text-sm rounded-lg border transition-all font-medium ${
-                      tone === t
-                        ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-900/40'
-                        : 'bg-slate-900 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-white'
-                    }`}
-                  >
-                    {t}
-                  </button>
-                ))}
+                {Object.values(ToneType).map((t) => {
+                  const isAuto = t === ToneType.AUTO;
+                  const isActive = tone === t;
+                  
+                  return (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => setTone(t)}
+                      className={`px-2 py-2.5 text-xs md:text-sm rounded-lg border transition-all font-medium flex items-center justify-center gap-1.5 ${
+                        isActive
+                          ? isAuto 
+                            ? 'bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-900 border-amber-500 shadow-lg shadow-amber-900/40 font-bold'
+                            : 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-900/40'
+                          : isAuto
+                            ? 'bg-slate-800 text-amber-500 border-amber-900/50 hover:bg-slate-700' 
+                            : 'bg-slate-900 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-white'
+                      } ${isAuto ? 'col-span-2' : ''}`}
+                    >
+                      {t}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
